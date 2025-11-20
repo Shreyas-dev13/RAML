@@ -3,6 +3,8 @@ import os
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from fastapi.responses import JSONResponse
 from ..services.raml_service import analyze_apk_with_raml
+from celery.result import AsyncResult
+from celery import states
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
@@ -19,5 +21,20 @@ async def upload_apk(file: UploadFile = File(...)):
     with open(apk_path, "wb") as f:
         f.write(await file.read())
 
-    result = await analyze_apk_with_raml(apk_path)
-    return JSONResponse(content=result)
+    result = analyze_apk_with_raml.delay(apk_path)
+    return JSONResponse({"task_id": result.id, "status": "Task submitted"})
+
+
+@router.get("/status/{task_id}")
+async def get_analysis_status(task_id: str):
+    result = AsyncResult(task_id)
+    if result.state == states.PENDING:
+        return JSONResponse({"status": "Pending"})
+    elif result.state == states.STARTED:
+        return JSONResponse({"status": "In Progress"})
+    elif result.state == states.SUCCESS:
+        return JSONResponse({"status": "Completed", "result": result.result})
+    elif result.state == states.FAILURE:
+        return JSONResponse({"status": "Failed", "error": str(result.result)})
+    else:
+        return JSONResponse({"status": result.state})

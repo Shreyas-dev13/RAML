@@ -8,3 +8,4 @@ APKs/
 logs/
 output/
 smali_vectorstore/
+users.db
