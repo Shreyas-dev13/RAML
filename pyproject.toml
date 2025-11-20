@@ -5,12 +5,14 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "fastapi[standard]>=0.121.3",
     "langchain>=0.3.27",
     "langchain-chroma>=0.2.6",
     "langchain-community>=0.3.31",
     "langchain-huggingface>=0.3.1",
     "langchain-openai>=0.3.35",
     "langfuse>=3.6.2",
+    "passlib[bcrypt]>=1.7.4",
     "sentence-transformers>=5.1.1",
     "torch>=2.9.0",
 ]
