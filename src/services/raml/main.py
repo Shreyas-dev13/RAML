@@ -21,8 +21,9 @@ from .logger import logger
 class SmaliMalwareAnalyzer:
     """Main class for Smali malware analysis using RAG."""
     
-    def __init__(self, smali_folder: str, output_dir: str = None):
+    def __init__(self, smali_folder: str, package_name: str, output_dir: str = None):
         self.smali_folder = smali_folder
+        self.package_name = package_name
         self.output_dir = output_dir or CONFIG["output"]["output_dir"]
         self.loader = None
         self.retrieval_engine = None
@@ -53,7 +54,7 @@ class SmaliMalwareAnalyzer:
         
         # Load Smali documents
         self.loader = SmaliFolderLoader(self.smali_folder)
-        documents = await self.loader.load()
+        documents = await self.loader.load(self.package_name)
         
         if not documents:
             raise ValueError(f"No Smali files found in {self.smali_folder}")
@@ -195,6 +196,7 @@ async def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(description="Smali Malware Analysis RAG System")
     parser.add_argument("smali_folder", help="Path to folder containing Smali files")
+    parser.add_argument("package_name", help="Package name of the app being analyzed")
     parser.add_argument("--behaviors", nargs="+", type=int, required=True,
                        help="List of behavior IDs to analyze (1-12)")
     parser.add_argument("--app-name", help="Name of the app being analyzed")
@@ -214,7 +216,7 @@ async def main():
     
     try:
         # Initialize analyzer
-        analyzer = SmaliMalwareAnalyzer(args.smali_folder, args.output_dir)
+        analyzer = SmaliMalwareAnalyzer(args.smali_folder, args.package_name, args.output_dir)
         
         # Setup system
         await analyzer.setup_system(force_rebuild=args.force_rebuild)

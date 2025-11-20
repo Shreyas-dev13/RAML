@@ -24,10 +24,10 @@ class SmaliFolderLoader(BaseLoader):
         self.save_descriptions = save_descriptions
         self.descriptions_data = []
         
-    async def load(self) -> List[Document]:
+    async def load(self, package_name: str) -> List[Document]:
         """Load all Smali files from the folder and generate documents."""
         documents = []
-        smali_files = self._find_smali_files(self.folder_path)
+        smali_files = self._find_smali_files(package_name, self.folder_path)
         
         logger.info(f"Found {len(smali_files)} Smali files to process")
         
@@ -127,13 +127,13 @@ class SmaliFolderLoader(BaseLoader):
         except Exception as e:
             logger.error(f"Error saving descriptions: {e}")
     
-    def _find_smali_files(self, folder_path: str) -> List[str]:
+    def _find_smali_files(self, package_name: str, folder_path: str) -> List[str]:
         """Recursively find all .smali files in the folder."""
         smali_files = []
-        
+        package_path = package_name.replace('.', os.sep)
         for root, dirs, files in os.walk(folder_path):
             for file in files:
-                if file.endswith('.smali'):
+                if package_path in root and file.endswith('.smali'):
                     smali_files.append(os.path.join(root, file))
         
         return smali_files
