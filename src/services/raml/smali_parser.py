@@ -1,7 +1,7 @@
 import re
 import os
 from typing import List, Dict, Optional, Tuple
-from logger import logger
+from .logger import logger
 
 class SmaliParser:
     """Parser for Smali files to extract class and method information."""

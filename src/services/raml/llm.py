@@ -1,8 +1,8 @@
 from openai import AsyncOpenAI
 from tenacity import retry, wait_exponential, stop_after_attempt
 from langfuse import observe, propagate_attributes, get_client
-from config import CONFIG
-from logger import logger
+from .config import CONFIG
+from .logger import logger
 from asyncio import Semaphore
 
 langfuse = get_client()

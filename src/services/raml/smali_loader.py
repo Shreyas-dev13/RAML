@@ -5,10 +5,10 @@ import asyncio
 from typing import List, Dict
 from langchain.document_loaders.base import BaseLoader
 from langchain.schema import Document
-from smali_parser import SmaliParser
-from config import CONFIG
-from logger import logger
-from llm import LLM
+from .smali_parser import SmaliParser
+from .config import CONFIG
+from .logger import logger
+from .llm import LLM
 from langfuse import get_client
  
 langfuse = get_client()

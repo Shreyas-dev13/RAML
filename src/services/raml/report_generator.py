@@ -2,7 +2,7 @@ import json
 import os
 from typing import List, Dict
 from datetime import datetime
-from config import CONFIG, BEHAVIOR_DESCRIPTIONS
+from .config import CONFIG, BEHAVIOR_DESCRIPTIONS
 
 class ReportGenerator:
     """Generator for malware analysis reports."""

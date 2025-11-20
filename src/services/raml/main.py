@@ -12,11 +12,11 @@ import time
 from typing import List, Dict
 from tqdm import tqdm
 
-from config import CONFIG, BEHAVIOR_DESCRIPTIONS
-from smali_loader import SmaliFolderLoader
-from retrieval_engine import MalwareRetrievalEngine
-from report_generator import ReportGenerator
-from logger import logger
+from .config import CONFIG, BEHAVIOR_DESCRIPTIONS
+from .smali_loader import SmaliFolderLoader
+from .retrieval_engine import MalwareRetrievalEngine
+from .report_generator import ReportGenerator
+from .logger import logger
 
 class SmaliMalwareAnalyzer:
     """Main class for Smali malware analysis using RAG."""
