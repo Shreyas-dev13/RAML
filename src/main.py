@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import Base, engine
 from .routes import user_routes, analysis_routes
+import warnings
+warnings.filterwarnings("ignore", message=".*bcrypt version.*")
+
 
 Base.metadata.create_all(bind=engine)
 
