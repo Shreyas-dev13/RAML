@@ -42,4 +42,10 @@ def login_user(user: schemas.UserLogin, db: Session):
     if not pwd_context.verify(user.password, str(db_user.hashed_password)):
         raise HTTPException(status_code=401, detail="Incorrect password")
 
-    return {"message": "Login successful"}
+    return {
+        "message": "Login successful",
+        "user": {
+            "username": db_user.username,
+            "email": db_user.email
+        }
+    }
